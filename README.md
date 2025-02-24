@@ -8,7 +8,7 @@ This is a general Text-to-Text chat bot using gemini-1.5-flash API.
 - Express Backend
 
 ### How to build:
-- create a file name `.env` and write api as
+- create a file name `.env` in backend directory and write API as
 ```
 API = "your_api_goes_here"
 ```
@@ -25,3 +25,7 @@ npm run dev
 cd .\backend\
 ```
 - Now run the server
+```
+node .\server.js
+```
+- Now open `localhost:5174`
