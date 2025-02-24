@@ -24,6 +24,10 @@ npm run dev
 ```
 cd .\backend\
 ```
+- Now again install the packages 
+```
+npm install
+```
 - Now run the server
 ```
 node .\server.js
