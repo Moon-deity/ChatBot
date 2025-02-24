@@ -29,3 +29,8 @@ cd .\backend\
 node .\server.js
 ```
 - Now open `localhost:5174`
+
+## Very Important Note:
+Due to Shortage of time I was unable to make new and existing conversations tab but I will soon make that too  
+I will store the conversations on local storage (*I want to store them on a good online database service but my pocket say **no***)  
+(*Also you can send only 15 messages per minute in this API, I want to buy premium with more tokens but again my pocket says **no***)
