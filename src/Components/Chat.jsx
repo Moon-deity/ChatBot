@@ -1,12 +1,22 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import UserMessage from "./UserMessage";
 import BotMessage from "./BotMessage";
+import { chatContext } from "../Context/Context";
 
 const Chat = () => {
+  const context = useContext(chatContext);
   const [Value, setValue] = useState("");
   const [History, setHistory] = useState([]);
   const [Error, setError] = useState("");
   const chatboxRef = useRef(null);
+
+  useEffect(() => {
+    setHistory(
+      localStorage.getItem(context.CurrentChat)
+        ? JSON.parse(localStorage.getItem(context.CurrentChat))
+        : []
+    );
+  }, [context.CurrentChat]);
 
   useEffect(() => {
     if (chatboxRef.current) {
@@ -30,11 +40,22 @@ const Chat = () => {
           "Content-Type": "application/json",
         },
       };
-      setValue("")
+      setValue("");
       const response = await fetch("http://localhost:3000/chat", postMessage);
       const data = await response.json();
       setHistory((oldHistory) => [
         ...oldHistory,
+        {
+          role: "user",
+          parts: Value,
+        },
+        {
+          role: "model",
+          parts: data.message,
+        },
+      ]);
+      context.setHistoryArray([
+        ...History,
         {
           role: "user",
           parts: Value,
@@ -53,7 +74,9 @@ const Chat = () => {
   return (
     <div className="bg-neutral-800 relative w-4/5 h-screen">
       <div className="header flex justify-between p-4">
-        <span className="text-neutral-300 text-2xl">Gemini-1.5-flash</span>
+        <span className="text-white text-2xl">
+          <span className="text-neutral-500">Gemini-1.5-flash</span> || {context.CurrentChat}
+        </span>
         <span className="material-symbols-outlined text-neutral-300 large-logo-icon">
           Forum
         </span>
@@ -67,9 +90,7 @@ const Chat = () => {
             if (message.role === "user") {
               return <UserMessage key={index} message={message.parts} />;
             } else {
-              return (
-                <BotMessage key={index} message={message.parts} />
-              );
+              return <BotMessage key={index} message={message.parts} />;
             }
           })}
         </div>
